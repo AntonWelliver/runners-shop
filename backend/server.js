@@ -1,24 +1,35 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const products = require('./data/products')
+// import express from 'express';
+const express = require('express');
+const dotenv = require('dotenv');
+const colors = require('colors');
+// import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
+const connectDB = require('./config/db.js');
+const productRoutes = require('./routes/productRoutes.js');
+const userRoutes = require('./routes/userRoutes.js');
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
+connectDB();
 
-app.get('/', (req, res) => {
-    res.send('API is running...')
-})
+const app = express();
 
-app.get('/api/products', (req, res) => {
-    res.json(products)
-})
+app.use(express.json());
 
-app.get('/api/products/:id', (req, res) => {
-    const product = products.find(p => p._id === req.params.id)
-    res.json(product)
-})
+app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
-const PORT = process.env.PORT || 5000
+// Handle errors
+// handle 404 errors
+app.use(notFound);
 
-app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`))
+// Get errors from routes
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
+app.listen(
+	PORT,
+	console.log(
+		`Server running in ${process.env.NODE_ENV} on port ${PORT}`.yellow.bold
+	)
+);
