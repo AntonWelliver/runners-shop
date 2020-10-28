@@ -10,12 +10,6 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
 			);
 
 			if (existItem) {
-				console.log(
-					'cartReduce.existItem',
-					existItem,
-					' product',
-					item.product
-				);
 				return {
 					...state,
 					cartItems: state.cartItems.map((x) =>
@@ -23,13 +17,6 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
 					),
 				};
 			} else {
-				console.log(
-					'cartReduce.existItem - else::',
-					existItem,
-					' product',
-					item.product
-				);
-
 				return {
 					...state,
 					cartItems: [...state.cartItems, item],
