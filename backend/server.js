@@ -21,11 +21,10 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 
-/* ADD when paypal
 app.get('/api/config/paypal', (req, res) => {
 	res.send(process.env.PAYPAL_CLIENT_ID);
 });
-*/
+
 
 // Handle errors
 // handle 404 errors
