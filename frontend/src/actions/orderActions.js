@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_FAIL, ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL, ORDER_LIST_REQUEST, ORDER_LIST_SUCCESS, ORDER_LIST_FAIL, FULL_ORDER_LIST_REQUEST, FULL_ORDER_LIST_SUCCESS, FULL_ORDER_LIST_FAIL } from '../constants/orderConstants'
+import { ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_FAIL, ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS, ORDER_PAY_FAIL, ORDER_LIST_REQUEST, ORDER_LIST_SUCCESS, ORDER_LIST_FAIL, FULL_ORDER_LIST_REQUEST, FULL_ORDER_LIST_SUCCESS, FULL_ORDER_LIST_FAIL, ORDER_DELIVER_REQUEST, ORDER_DELIVER_SUCCESS, ORDER_DELIVER_FAIL } from '../constants/orderConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
     try {
@@ -91,6 +91,38 @@ export const payOrder = (orderId, paymentResult) => async (dispatch, getState) =
     } catch (error) {
         dispatch({
             type: ORDER_PAY_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+}
+
+export const deliverOrder = (order) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: ORDER_DELIVER_REQUEST
+        })
+
+        const { userLogin: { userInfo } } = getState()
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.put(`/api/orders/${order._id}/delivered`, {}, config)
+
+        dispatch({
+            type: ORDER_DELIVER_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: ORDER_DELIVER_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
