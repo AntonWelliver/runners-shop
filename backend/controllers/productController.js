@@ -6,34 +6,36 @@ const Product = require('../models/productModel.js');
 // @access Public
 //const getProducts = asyncHandler(async (req,res) => {
 
-exports.getProducts = asyncHandler(async (req, res) => {
+/* exports.getProducts = asyncHandler(async (req, res) => {
 	const products = await Product.find({});
 	res.json(products);
-});
-/*
+}); */
+
 exports.getProducts = asyncHandler(async (req, res) => {
-	const pageSize = 4;
+	/* const pageSize = 4;
 	let page = 1;
 	if (req.query.pageNumber) {
 		page = Number(req.query.pageNumber);
-	}
+	} */
 
 	const keyword = req.query.keyword
 		? {
-				name: {
-					$regex: req.query.keyword,
-					$options: 'i',
-				},
-		  }
+			name: {
+				$regex: req.query.keyword,
+				$options: 'i',
+			},
+		}
 		: {};
-	const count = await Product.countDocuments({ ...keyword });
+	/* const count = await Product.countDocuments({ ...keyword }); */
 	const products = await Product.find({ ...keyword })
-		.limit(pageSize)
-		.skip(pageSize * (page - 1));
+	/* .limit(pageSize)
+	.skip(pageSize * (page - 1)); */
 
-	res.json({ products, page, pages: Math.ceil(count / pageSize) });
+	/* { products, page, pages: Math.ceil(count / pageSize) } */
+
+	res.json(products);
 });
-*/
+
 // @desc Fetch single product
 // @route GET /api/products/:id
 // @access Public
