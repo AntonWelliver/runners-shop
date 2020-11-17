@@ -12,11 +12,11 @@ const Product = require('../models/productModel.js');
 }); */
 
 exports.getProducts = asyncHandler(async (req, res) => {
-	/* const pageSize = 4;
+	const pageSize = 4;
 	let page = 1;
 	if (req.query.pageNumber) {
 		page = Number(req.query.pageNumber);
-	} */
+	}
 
 	const keyword = req.query.keyword
 		? {
@@ -26,14 +26,12 @@ exports.getProducts = asyncHandler(async (req, res) => {
 			},
 		}
 		: {};
-	/* const count = await Product.countDocuments({ ...keyword }); */
+	const count = await Product.countDocuments({ ...keyword });
 	const products = await Product.find({ ...keyword })
-	/* .limit(pageSize)
-	.skip(pageSize * (page - 1)); */
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
 
-	/* { products, page, pages: Math.ceil(count / pageSize) } */
-
-	res.json(products);
+	res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc Fetch single product
