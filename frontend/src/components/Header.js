@@ -27,9 +27,11 @@ const Header = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Route render={({ history }) => <SearchBox history={history} />} />
                         <Nav className="ml-auto">
-                            <LinkContainer to='/cart'>
-                                <Nav.Link><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
-                            </LinkContainer>
+                            {(!userInfo || (userInfo && !userInfo.isAdmin)) && (
+                                <LinkContainer to='/cart'>
+                                    <Nav.Link><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
+                                </LinkContainer>
+                            )}
                             {userInfo && userInfo.isAdmin && (
                                 <NavDropdown title='Admin' id='adminmenu'>
                                     <LinkContainer to='/admin/userlist'>
