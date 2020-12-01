@@ -30,16 +30,6 @@ const Header = () => {
                             <LinkContainer to='/cart'>
                                 <Nav.Link><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
                             </LinkContainer>
-                            {userInfo ? (
-                                <NavDropdown title={userInfo.name} id='username'>
-                                    <LinkContainer to='/profile'>
-                                        <NavDropdown.Item>Profile</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                                </NavDropdown>
-                            ) : <LinkContainer to='/login'>
-                                    <Nav.Link><i className='fas fa-user'></i>Sign In</Nav.Link>
-                                </LinkContainer>}
                             {userInfo && userInfo.isAdmin && (
                                 <NavDropdown title='Admin' id='adminmenu'>
                                     <LinkContainer to='/admin/userlist'>
@@ -53,6 +43,16 @@ const Header = () => {
                                     </LinkContainer>
                                 </NavDropdown>
                             )}
+                            {userInfo ? (
+                                <NavDropdown title={userInfo.name} id='username'>
+                                    <LinkContainer to='/profile'>
+                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                </NavDropdown>
+                            ) : <LinkContainer to='/login'>
+                                    <Nav.Link><i className='fas fa-user'></i>Sign In</Nav.Link>
+                                </LinkContainer>}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
