@@ -73,16 +73,18 @@ const ProductScreen = ({ history, match }) => {
                         <Col md={3}>
                             <Card>
                                 <ListGroup variant='flush'>
-                                    <ListGroup.Item>
-                                        <Row>
-                                            <Col>
-                                                Price:
+                                    {(!userInfo || (userInfo && !userInfo.isAdmin)) && (
+                                        <ListGroup.Item>
+                                            <Row>
+                                                <Col>
+                                                    Price:
                                     </Col>
-                                            <Col>
-                                                <strong>${product.price}</strong>
-                                            </Col>
-                                        </Row>
-                                    </ListGroup.Item>
+                                                <Col>
+                                                    <strong>${product.price}</strong>
+                                                </Col>
+                                            </Row>
+                                        </ListGroup.Item>
+                                    )}
 
                                     <ListGroup.Item>
                                         <Row>
@@ -95,7 +97,7 @@ const ProductScreen = ({ history, match }) => {
                                         </Row>
                                     </ListGroup.Item>
 
-                                    {product.countInStock > 0 && (
+                                    {(!userInfo || (userInfo && !userInfo.isAdmin)) && product.countInStock > 0 && (
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col>Qty</Col>
@@ -112,9 +114,11 @@ const ProductScreen = ({ history, match }) => {
                                         </ListGroup.Item>
                                     )}
 
-                                    <ListGroup.Item>
-                                        <Button onClick={addToCartHandler} className='btn-block' type='button' disabled={product.countInStock === 0}>Add To Cart</Button>
-                                    </ListGroup.Item>
+                                    {(!userInfo || (userInfo && !userInfo.isAdmin)) && (
+                                        <ListGroup.Item>
+                                            <Button onClick={addToCartHandler} className='btn-block' type='button' disabled={product.countInStock === 0}>Add To Cart</Button>
+                                        </ListGroup.Item>
+                                    )}
                                 </ListGroup>
                             </Card>
                         </Col>
