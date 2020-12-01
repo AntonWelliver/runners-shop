@@ -110,7 +110,6 @@ exports.getOrders = asyncHandler(async (req, res) => {
 //const updateOrderToPaid = asyncHandler(async (req,res) => {
 
 exports.updateOrderToDelivered = asyncHandler(async (req, res) => {
-	console.log('updateOrderToDelivers');
 	const order = await Order.findById(req.params.id);
 
 	if (order) {
