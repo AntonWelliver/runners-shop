@@ -26,7 +26,7 @@ const HomeScreen = ({ match }) => {
 
     return (
         <>
-            <Meta />
+            <Meta title={'Runners Shop | Home'} />
             <h1>Popular Products</h1>
             {!keyword ? <ProductCarousel /> : <Link to='/' className='btn btn-light'>Go Back</Link>}
             <h1>All Products</h1>
