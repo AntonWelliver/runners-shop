@@ -8,7 +8,7 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import Meta from '../components/Meta'
 import { listProductDetails, updateProduct } from '../actions/productActions'
-import { PRODUCT_UPDATE_RESET } from '../constants/productContstants'
+import { PRODUCT_UPDATE_RESET, PRODUCT_DETAILS_RESET } from '../constants/productContstants'
 
 const ProductEditScreen = ({ match, history }) => {
     const productId = match.params.id
@@ -84,6 +84,7 @@ const ProductEditScreen = ({ match, history }) => {
             countInStock,
             description
         }))
+        dispatch({ type: PRODUCT_DETAILS_RESET })
     }
 
     return (
