@@ -44,6 +44,7 @@ export const cartReducer = (state = { cartItems: [], shippingAddress: {} }, acti
 				'cartItems'
 			)
 			return {
+				...state,
 				cartItems: []
 			}
 		default:
