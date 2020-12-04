@@ -1,6 +1,25 @@
 const asyncHandler = require('express-async-handler');
 const { generateToken } = require('../utils/generateToken.js');
 const User = require('../models/userModel.js');
+const emailValidator = require('email-validator');
+const passwordValidator = require('password-validator');
+
+const passwordValidated = (password) => {
+	const schema = new passwordValidator();
+
+	const validation = schema
+		.is()
+		.min(6)
+		.is()
+		.max(12)
+		.has()
+		.uppercase()
+		.digits(1)
+		.not()
+		.spaces()
+		.validate(password);
+	return validation;
+};
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -35,6 +54,16 @@ exports.authUser = asyncHandler(async (req, res) => {
 
 exports.registerUser = asyncHandler(async (req, res) => {
 	const { name, email, password } = req.body;
+
+	if (!email || emailValidator.validate(email) === false) {
+		res.status(400);
+		throw new Error('Invalid email format');
+	}
+
+	if (!password || !passwordValidated(password)) {
+		res.status(400);
+		throw new Error('Password must contain at least 6 symbols and a maximum of 12, must contain one capital and at least one number and no spaces.');
+	}
 
 	const userExists = await User.findOne({ email });
 
@@ -92,6 +121,16 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 //const updateUserProfile = asyncHandler(async (req,res) => {
 
 exports.updateUserProfile = asyncHandler(async (req, res) => {
+	if (req.body.email && emailValidator.validate(req.body.email) === false) {
+		res.status(400);
+		throw new Error('Invalid email format');
+	}
+
+	if (req.body.password && !passwordValidated(req.body.password)) {
+		res.status(400);
+		throw new Error('Password must contain at least 6 symbols and a maximum of 12, must contain one capital and at least one number and no spaces.');
+	}
+
 	const user = await User.findById(req.user._id);
 
 	if (user) {
@@ -174,6 +213,16 @@ exports.getUserById = asyncHandler(async (req, res) => {
 //const updateUserProfile = asyncHandler(async (req,res) => {
 
 exports.updateUser = asyncHandler(async (req, res) => {
+	if (req.body.email && emailValidator.validate(req.body.email) === false) {
+		res.status(400);
+		throw new Error('Invalid email format');
+	}
+
+	if (req.body.password && !passwordValidated(req.body.password)) {
+		res.status(400);
+		throw new Error('Password must contain at least 6 symbols and a maximum of 12, must contain one capital and at least one number and no spaces.');
+	}
+
 	const user = await User.findById(req.params.id);
 
 	if (user) {
