@@ -12,7 +12,12 @@ const Product = require('../models/productModel.js');
 }); */
 
 exports.getProducts = asyncHandler(async (req, res) => {
-	const pageSize = 4;
+	let pageSize = 8;
+
+	if (req.query.pageSize) {
+		pageSize = Number(req.query.pageSize)
+	}
+
 	let page = 1;
 	if (req.query.pageNumber) {
 		page = Number(req.query.pageNumber);
