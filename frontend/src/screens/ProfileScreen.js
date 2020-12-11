@@ -6,7 +6,6 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Meta from '../components/Meta'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 import { listMyOrders } from '../actions/orderActions'
 
 const ProfileScreen = ({ location, history }) => {
@@ -19,13 +18,13 @@ const ProfileScreen = ({ location, history }) => {
     const dispatch = useDispatch()
 
     const userDetails = useSelector(state => state.userDetails)
-    const { loading, error, user } = userDetails
+    const { loading, user } = userDetails
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const { success } = userUpdateProfile
+    const { success: updateSuccess, error: updateError } = userUpdateProfile
 
     const orderList = useSelector(state => state.orderList)
     const { loading: loadingOrders, error: errorOrders, orders } = orderList
@@ -34,16 +33,18 @@ const ProfileScreen = ({ location, history }) => {
         if (!userInfo) {
             history.push('/login')
         } else {
-            if (!user || !user.name || success) {
-                dispatch({ type: USER_UPDATE_PROFILE_RESET })
+            if (!user || !user.name || updateSuccess) {
+                /* dispatch({ type: USER_UPDATE_PROFILE_RESET }) */
                 dispatch(getUserDetails('profile'))
-                dispatch(listMyOrders())
             } else {
                 setName(user.name)
                 setEmail(user.email)
             }
+            if (user && user.name) {
+                dispatch(listMyOrders())
+            }
         }
-    }, [dispatch, history, userInfo, user, success])
+    }, [dispatch, history, userInfo, user, updateSuccess])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -61,8 +62,8 @@ const ProfileScreen = ({ location, history }) => {
                 <Col md={3}>
                     <h2>User Profile</h2>
                     {message && <Message variant='danger'>{message}</Message>}
-                    {error && <Message variant='danger'>{error}</Message>}
-                    {success && <Message variant='success'>Profile Updated</Message>}
+                    {updateError && <Message variant='danger'>{updateError}</Message>}
+                    {updateSuccess && <Message variant='success'>Profile Updated</Message>}
                     {loading && <Loader />}
                     <Form onSubmit={submitHandler}>
                         <Form.Group controlId='name'>

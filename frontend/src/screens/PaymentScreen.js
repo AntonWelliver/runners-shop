@@ -8,9 +8,24 @@ import { savePaymentMethod } from '../actions/cartActions'
 
 const PaymentScreen = ({ history }) => {
     const cart = useSelector(state => state.cart)
-    const { shippingAddress } = cart
+    const { shippingAddress, cartItems, checkoutButtonSelected } = cart
 
-    if (!shippingAddress) {
+    if (cartItems.length === 0) {
+        history.push('/cart')
+    }
+
+    if (checkoutButtonSelected === false) {
+        history.push('/cart')
+    }
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+
+    if (!userInfo) {
+        history.push('/login')
+    }
+
+    if (!shippingAddress || !shippingAddress.address || shippingAddress.address === '') {
         history.push('/shipping')
     }
 

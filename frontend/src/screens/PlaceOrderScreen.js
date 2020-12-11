@@ -10,6 +10,30 @@ import { createOrder } from '../actions/orderActions'
 const PlaceOrderScreen = ({ history }) => {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart)
+    const { shippingAddress, cartItems, paymentMethod, checkoutButtonSelected } = cart
+
+    if (cartItems.length === 0) {
+        history.push('/cart')
+    }
+
+    if (checkoutButtonSelected === false) {
+        history.push('/cart')
+    }
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+
+    if (!userInfo) {
+        history.push('/login')
+    }
+
+    if (!shippingAddress || !shippingAddress.address || shippingAddress.address === '') {
+        history.push('/shipping')
+    }
+
+    if (paymentMethod === '') {
+        history.push('/payment')
+    }
 
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
     cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 100).toFixed(2)
