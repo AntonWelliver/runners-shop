@@ -5,6 +5,7 @@ import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
 import { addToCart, removeFromCart } from '../actions/cartActions'
+import { CART_RESET } from '../constants/cartConstants'
 
 const CartScreen = ({ match, location, history }) => {
     const productId = match.params.id
@@ -29,6 +30,10 @@ const CartScreen = ({ match, location, history }) => {
 
     const checkoutHandler = () => {
         history.push('/login?redirect=shipping')
+    }
+    const clearAllHandler = () => {
+        dispatch({ type: CART_RESET })
+        history.push('/cart')
     }
 
     return (
@@ -79,7 +84,12 @@ const CartScreen = ({ match, location, history }) => {
                             <ListGroup.Item>
                                 <Button type='button' className='btn-block' disabled={cartItems.length === 0} onClick={checkoutHandler}>
                                     Proceed to checkout
-                            </Button>
+                                </Button>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Button type='button' className='btn-block' variant='danger' disabled={cartItems.length === 0} onClick={clearAllHandler}>
+                                    Clear All
+                                </Button>
                             </ListGroup.Item>
                         </ListGroup>
                     </Card>

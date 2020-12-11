@@ -1,6 +1,6 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS, CART_SAVE_PAYMENT_METHOD, CART_RESET } from '../constants/cartConstants';
 
-export const cartReducer = (state = { cartItems: [], shippingAddress: {}, paymentMethod: 'PayPal' }, action) => {
+export const cartReducer = (state = { cartItems: [], shippingAddress: { address: '', city: '', postalCode: '', country: '' }, paymentMethod: '' }, action) => {
 	switch (action.type) {
 		case CART_ADD_ITEM:
 			const item = action.payload;
@@ -41,11 +41,15 @@ export const cartReducer = (state = { cartItems: [], shippingAddress: {}, paymen
 			};
 		case CART_RESET:
 			localStorage.removeItem(
-				'cartItems'
+				'cartItems',
+				'shippingAddress',
+				'paymentMethod'
 			)
 			return {
 				...state,
-				cartItems: []
+				cartItems: [],
+				shippingAddress: { address: '', city: '', postalCode: '', country: '' },
+				paymentMethod: ''
 			}
 		default:
 			return state;
