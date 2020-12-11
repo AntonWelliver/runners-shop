@@ -8,9 +8,13 @@ import { savePaymentMethod } from '../actions/cartActions'
 
 const PaymentScreen = ({ history }) => {
     const cart = useSelector(state => state.cart)
-    const { shippingAddress, cartItems } = cart
+    const { shippingAddress, cartItems, checkoutButtonSelected } = cart
 
     if (cartItems.length === 0) {
+        history.push('/cart')
+    }
+
+    if (checkoutButtonSelected === false) {
         history.push('/cart')
     }
 

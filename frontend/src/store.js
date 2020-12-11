@@ -38,8 +38,10 @@ const shippingAddressFromStorage = localStorage.getItem('shippingAddress') ? JSO
 
 const paymentMethodFromStorage = localStorage.getItem('paymentMethod') ? JSON.parse(localStorage.getItem('paymentMethod')) : ''
 
+const checkoutButtonSelectedFromStorage = localStorage.getItem('checkoutButtonSelected') ? JSON.parse(localStorage.getItem('checkoutButtonSelected')) : false
+
 const initialState = {
-    cart: { cartItems: cartItemsFromStorage, shippingAddress: shippingAddressFromStorage, paymentMethod: paymentMethodFromStorage },
+    cart: { cartItems: cartItemsFromStorage, shippingAddress: shippingAddressFromStorage, paymentMethod: paymentMethodFromStorage, checkoutButtonSelected: checkoutButtonSelectedFromStorage },
     userLogin: { userInfo: userInfoFromStorage },
 }
 

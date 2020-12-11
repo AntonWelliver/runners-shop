@@ -10,9 +10,13 @@ import { createOrder } from '../actions/orderActions'
 const PlaceOrderScreen = ({ history }) => {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart)
-    const { shippingAddress, cartItems, paymentMethod } = cart
+    const { shippingAddress, cartItems, paymentMethod, checkoutButtonSelected } = cart
 
     if (cartItems.length === 0) {
+        history.push('/cart')
+    }
+
+    if (checkoutButtonSelected === false) {
         history.push('/cart')
     }
 
