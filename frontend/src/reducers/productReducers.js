@@ -22,7 +22,7 @@ export const productDetailsReducer = (state = { product: { reviews: [] } }, acti
         case PRODUCT_DETAILS_FAIL:
             return { loading: false, error: action.payload }
         case PRODUCT_DETAILS_RESET:
-            return { product: { reviews: [] } }
+            return { ...state, product: { reviews: [] } }
         default:
             return state
     }
