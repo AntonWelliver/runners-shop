@@ -10,23 +10,28 @@ const PaymentScreen = ({ history }) => {
     const cart = useSelector(state => state.cart)
     const { shippingAddress, cartItems, checkoutButtonSelected } = cart
 
+    let redirectPage
     if (cartItems.length === 0) {
-        history.push('/cart')
+        redirectPage = '/cart'
     }
 
-    if (checkoutButtonSelected === false) {
-        history.push('/cart')
+    if (!redirectPage && checkoutButtonSelected === false) {
+        redirectPage = '/cart'
     }
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
-    if (!userInfo) {
-        history.push('/login')
+    if (!redirectPage && !userInfo) {
+        redirectPage = '/login'
     }
 
-    if (!shippingAddress || !shippingAddress.address || shippingAddress.address === '') {
-        history.push('/shipping')
+    if (!redirectPage && (!shippingAddress || !shippingAddress.address || shippingAddress.address === '')) {
+        redirectPage = '/shipping'
+    }
+
+    if (redirectPage) {
+        history.push(redirectPage)
     }
 
     const [paymentMethod, setPaymentMethod] = useState('PayPal')
