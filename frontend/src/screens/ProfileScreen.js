@@ -34,7 +34,6 @@ const ProfileScreen = ({ location, history }) => {
             history.push('/login')
         } else {
             if (!user || !user.name || updateSuccess) {
-                /* dispatch({ type: USER_UPDATE_PROFILE_RESET }) */
                 dispatch(getUserDetails('profile'))
             } else {
                 setName(user.name)
@@ -51,6 +50,7 @@ const ProfileScreen = ({ location, history }) => {
         if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
+            setMessage('')
             dispatch(updateUserProfile({ id: user._id, name, email, password }))
         }
     }
