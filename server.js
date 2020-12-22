@@ -4,12 +4,12 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 // import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
-const connectDB = require('./config/db.js');
-const productRoutes = require('./routes/productRoutes.js');
-const userRoutes = require('./routes/userRoutes.js');
-const orderRoutes = require('./routes/orderRoutes.js');
-const uploadRoutes = require('./routes/uploadRoutes.js');
+const { notFound, errorHandler } = require('./backend/middleware/errorMiddleware.js');
+const connectDB = require('./backend/config/db.js');
+const productRoutes = require('./backend/routes/productRoutes.js');
+const userRoutes = require('./backend/routes/userRoutes.js');
+const orderRoutes = require('./backend/routes/orderRoutes.js');
+const uploadRoutes = require('./backend/routes/uploadRoutes.js');
 
 dotenv.config();
 
@@ -29,13 +29,17 @@ app.get('/api/config/paypal', (req, res) => {
 	res.send(process.env.PAYPAL_CLIENT_ID);
 });
 
-// define uploads folder __dirname points to backend dir
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-//console.log('server, using __dirname:', path.join(__dirname, '/uploads'));
-//console.log('server, using process.cwd():',path.join(process.cwd(), '/uploads'));
-//app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, '/frontend/build')))
 
-app.use('/uploads', express.static(path.join(process.cwd(), '/uploads')));
+	app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')))
+} else {
+	app.get('/', (req, res) => {
+		res.send('API is running...')
+	})
+}
 
 // Handle errors
 // handle 404 errors
