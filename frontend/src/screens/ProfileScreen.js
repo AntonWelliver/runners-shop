@@ -34,7 +34,6 @@ const ProfileScreen = ({ location, history }) => {
             history.push('/login')
         } else {
             if (!user || !user.name || updateSuccess) {
-                /* dispatch({ type: USER_UPDATE_PROFILE_RESET }) */
                 dispatch(getUserDetails('profile'))
             } else {
                 setName(user.name)
@@ -43,8 +42,11 @@ const ProfileScreen = ({ location, history }) => {
             if (user && user.name) {
                 dispatch(listMyOrders())
             }
+            if (updateError) {
+                setMessage(updateError)
+            }
         }
-    }, [dispatch, history, userInfo, user, updateSuccess])
+    }, [dispatch, history, userInfo, user, updateSuccess, updateError])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -62,7 +64,6 @@ const ProfileScreen = ({ location, history }) => {
                 <Col md={3}>
                     <h2>User Profile</h2>
                     {message && <Message variant='danger'>{message}</Message>}
-                    {updateError && <Message variant='danger'>{updateError}</Message>}
                     {updateSuccess && <Message variant='success'>Profile Updated</Message>}
                     {loading && <Loader />}
                     <Form onSubmit={submitHandler}>
