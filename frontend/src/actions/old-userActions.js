@@ -192,16 +192,12 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 	}
 };
 
-export const listUsers = (pageNumber = '', pageSize = '4') => async (
-	dispatch,
-	getState
-) => {
+export const listUsers = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: USER_LIST_REQUEST,
 		});
 
-		// testa bryta upp
 		const {
 			userLogin: { userInfo },
 		} = getState();
@@ -212,17 +208,13 @@ export const listUsers = (pageNumber = '', pageSize = '4') => async (
 			},
 		};
 
-		const { data } = await axios.get(
-			`/api/users?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-			config
-		);
+		const { data } = await axios.get(`/api/users`, config);
 
 		dispatch({
 			type: USER_LIST_SUCCESS,
 			payload: data,
 		});
 	} catch (error) {
-		// Request was a failure
 		dispatch({
 			type: USER_LIST_FAIL,
 			payload:

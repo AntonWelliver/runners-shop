@@ -15,7 +15,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
 	let pageSize = 8;
 
 	if (req.query.pageSize) {
-		pageSize = Number(req.query.pageSize)
+		pageSize = Number(req.query.pageSize);
 	}
 
 	let page = 1;
@@ -25,11 +25,11 @@ exports.getProducts = asyncHandler(async (req, res) => {
 
 	const keyword = req.query.keyword
 		? {
-			name: {
-				$regex: req.query.keyword,
-				$options: 'i',
-			},
-		}
+				name: {
+					$regex: req.query.keyword,
+					$options: 'i',
+				},
+		  }
 		: {};
 	const count = await Product.countDocuments({ ...keyword });
 	const products = await Product.find({ ...keyword })
@@ -80,7 +80,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
 		name: 'Sample name',
 		price: 0,
 		user: req.user._id,
-		image: '/images/sample.jpg',
+		image: '/uploads/sample.jpg',
 		brand: 'Sample brand',
 		category: 'Sample category',
 		countInStock: 0,

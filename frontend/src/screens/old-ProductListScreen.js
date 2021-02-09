@@ -144,12 +144,7 @@ const ProductListScreen = ({ history, match }) => {
 							))}
 						</tbody>
 					</Table>
-					<Paginate
-						pages={pages}
-						page={page}
-						isAdmin={true}
-						subdirectory='/productlist'
-					/>
+					<Paginate pages={pages} page={page} isAdmin={true} />
 				</>
 			)}
 		</>

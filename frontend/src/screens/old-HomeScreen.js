@@ -53,7 +53,6 @@ const HomeScreen = ({ match }) => {
 						pages={pages}
 						page={page}
 						keyword={keyword ? keyword : ''}
-						subdirectory='/page'
 					/>
 				</>
 			)}

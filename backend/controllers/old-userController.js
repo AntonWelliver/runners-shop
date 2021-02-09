@@ -170,27 +170,9 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
 //const getUser = asyncHandler(async (req,res) => {
 
 exports.getUsers = asyncHandler(async (req, res) => {
-	let pageSize = 4;
-	if (req.query.pageSize) {
-		pageSize = Number(req.query.pageSize);
-	}
+	const users = await User.find({});
 
-	let page = 1;
-	if (req.query.pageNumber) {
-		page = Number(req.query.pageNumber);
-	}
-
-	const count = await User.countDocuments({});
-
-	const users = await User.find({})
-		.limit(pageSize)
-		.skip(pageSize * (page - 1));
-
-	res.json({ users, page, pages: Math.ceil(count / pageSize) });
-
-	//const users = await User.find({});
-
-	//res.json(users);
+	res.json(users);
 });
 
 // @desc Delete a user
