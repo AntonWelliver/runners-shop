@@ -14,6 +14,8 @@ const Product = require('../models/productModel.js');
 exports.getProducts = asyncHandler(async (req, res) => {
 	let pageSize = 8;
 
+	//console.log('query', req.query);
+
 	if (req.query.pageSize) {
 		pageSize = Number(req.query.pageSize);
 	}
@@ -34,6 +36,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
 	const count = await Product.countDocuments({ ...keyword });
 	const products = await Product.find({ ...keyword })
 		.limit(pageSize)
+		.sort('name')
 		.skip(pageSize * (page - 1));
 
 	res.json({ products, page, pages: Math.ceil(count / pageSize) });
